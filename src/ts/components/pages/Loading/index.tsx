@@ -15,7 +15,7 @@ const Loading = () => {
     return (
         <View style={styles.container}>
             <ChangeStateButton state={UiContext.Status.AUTHORIZED} />
-            <ChangeStateButton state={UiContext.Status.UN_AUTHRIZED} />
+            <ChangeStateButton state={UiContext.Status.UN_AUTHORIZED} />
             <ChangeStateButton state={UiContext.Status.FIRST_OPEN} />
         </View>
     );

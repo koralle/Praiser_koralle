@@ -7,16 +7,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     }
 });
 
-const Home = () => {
+const Statistics = () => {
+
     const { navigate } = useNavigation();
 
     return (
         <View style={styles.container}>
-            <Text>Home</Text>
+            <Text>Statistics</Text>
             <TouchableOpacity onPress={() => navigate(DETAIL)}>
                 <Text>Go to Detail</Text>
             </TouchableOpacity>
@@ -24,4 +25,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Statistics;
