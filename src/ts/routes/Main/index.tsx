@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
 import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS } from '../../constants/path';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS, USER_INFO } from '../../constants/path';
 import { Initial, Loading, ChooseLogin } from '../../components/pages';
-import * as UiContext from '../../contexts/ui';
 import Home from './Home';
 import Statistics from './Statistics';
+import UserInfo from './UserInfo';
+import * as UiContext from '../../contexts/ui';
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const HomeDrawer = createDrawerNavigator();
+const StatisticsDrawer = createDrawerNavigator();
 
 const forFade = ({ current }: StackCardInterpolationProps) => ({
     cardStyle: {
@@ -17,11 +21,45 @@ const forFade = ({ current }: StackCardInterpolationProps) => ({
     },
 });
 
+const HomeWithDrawer = () => {
+    return (
+        <HomeDrawer.Navigator initialRouteName={HOME}>
+            <HomeDrawer.Screen name={HOME} component={Home} />
+            <HomeDrawer.Screen name={USER_INFO} component={UserInfo} />
+        </HomeDrawer.Navigator>
+    );
+};
+
+const StatisticsWithDrawer = () => {
+    return (
+        <StatisticsDrawer.Navigator>
+            <StatisticsDrawer.Screen name={STATISTICS} component={Statistics} />
+            <StatisticsDrawer.Screen name={USER_INFO} component={UserInfo} />
+        </StatisticsDrawer.Navigator>
+    );
+};
+
+const getActiveRouteName = (state: any): string => {
+    if (!state || !state.routes) return '';
+
+    const route = state.routes[state.index];
+
+    if (route.state) return getActiveRouteName(route.state);
+
+    return route.name;
+};
+
 const TabRoutes = () => {
     return (
-        <Tab.Navigator initialRouteName={HOME}>
-            <Tab.Screen name={HOME} component={Home} />
-            <Tab.Screen name={STATISTICS} component={Statistics} />
+        <Tab.Navigator
+            initialRouteName={HOME}
+            screenOptions={(props:any) => {
+                const routeName = getActiveRouteName(props.route.state);
+                return { tabBarVisible: routeName !== USER_INFO, }
+            }}
+        >
+            <Tab.Screen name={HOME} component={HomeWithDrawer} />
+            <Tab.Screen name={STATISTICS} component={StatisticsWithDrawer} />
         </Tab.Navigator>
     );
 };
