@@ -70,7 +70,7 @@ const switchingAuthStatus = (status: UiContext.Status) => {
         case UiContext.Status.UN_AUTHORIZED:
             return <Stack.Screen name={CHOOSE_LOGIN} component={ChooseLogin} />;
         case UiContext.Status.AUTHORIZED:
-            return <Stack.Screen name={HOME} component={TabRoutes} />;
+            return <Stack.Screen name={HOME} component={TabWithModalRoutes} />;
         case UiContext.Status.FIRST_OPEN:
         default:
             return <Stack.Screen name={INITIAL} component={Initial} />;
