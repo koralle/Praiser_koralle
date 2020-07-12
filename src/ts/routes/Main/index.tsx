@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS, USER_INFO } from '../../constants/path';
-import { Initial, Loading, ChooseLogin } from '../../components/pages';
+import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS, USER_INFO, INPUT } from '../../constants/path';
+import { Initial, Loading, ChooseLogin, Input } from '../../components/pages';
 import Home from './Home';
 import Statistics from './Statistics';
 import UserInfo from './UserInfo';
@@ -12,6 +12,7 @@ import * as UiContext from '../../contexts/ui';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const ModalStack = createStackNavigator();
 const HomeDrawer = createDrawerNavigator();
 const StatisticsDrawer = createDrawerNavigator();
 
@@ -76,12 +77,25 @@ const switchingAuthStatus = (status: UiContext.Status) => {
     }
 };
 
+const TabWithModalRoutes = () => {
+    return (
+        <ModalStack.Navigator mode="modal" headerMode="none">
+            <Stack.Screen name={HOME} component={TabRoutes} />
+            <Stack.Screen name={INPUT} component={Input} />
+        </ModalStack.Navigator>
+    );
+};
+
 const AuthWithRoutes = () => {
     const uiContext = useContext(UiContext.Context);
 
     return (
         <Stack.Navigator initialRouteName={LOADING} headerMode="none" screenOptions={{cardStyleInterpolator: forFade}}>
-            {uiContext.applicationState !== UiContext.Status.LOADING ? (switchingAuthStatus(uiContext.applicationState)) : (<Stack.Screen name={LOADING} component={Loading} />)}
+            {uiContext.applicationState !== UiContext.Status.LOADING ? (
+                switchingAuthStatus(uiContext.applicationState)
+            ) : (
+                <Stack.Screen name={LOADING} component={Loading} />
+            )}
         </Stack.Navigator>
     );
 };
